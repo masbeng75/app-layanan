@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use BezhanSalleh\LanguageSwitch\Http\Livewire\LanguageSwitchComponent;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -25,5 +27,13 @@ class ExampleTest extends TestCase
             $response = $this->actingAs($user)->get('/admin/service-requests');
             $response->assertSuccessful();
         }
+    }
+
+    public function test_language_switch_can_switch_locale(): void
+    {
+        Livewire::test(LanguageSwitchComponent::class)
+            ->call('changeLocale', 'id');
+
+        $this->assertEquals('id', session('locale'));
     }
 }

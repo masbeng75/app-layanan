@@ -42,7 +42,7 @@ class DocumentsRelationManager extends RelationManager
                 Select::make('verification_status')
                     ->label('Status Verifikasi Dokumen')
                     ->options(DocumentVerificationStatus::class)
-                    ->default(DocumentVerificationStatus::Pending)
+                    ->default(DocumentVerificationStatus::PENDING)
                     ->required(),
                 TextInput::make('notes')
                     ->label('Catatan / Alasan jika Perlu Perbaikan')
@@ -68,13 +68,7 @@ class DocumentsRelationManager extends RelationManager
                     ->url(fn ($record): ?string => $record->file_path ? asset('storage/'.$record->file_path) : null, shouldOpenInNewTab: true),
                 TextColumn::make('verification_status')
                     ->label('Status')
-                    ->badge()
-                    ->color(fn (DocumentVerificationStatus $state): string => match ($state) {
-                        DocumentVerificationStatus::Valid => 'success',
-                        DocumentVerificationStatus::Invalid => 'danger',
-                        DocumentVerificationStatus::RevisionNeeded => 'warning',
-                        DocumentVerificationStatus::Pending => 'gray',
-                    }),
+                    ->badge(),
                 TextColumn::make('notes')
                     ->label('Catatan')
                     ->placeholder('-'),

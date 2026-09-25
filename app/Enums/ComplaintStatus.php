@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum ComplaintStatus: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
+enum ComplaintStatus: string implements HasColor, HasLabel
 {
     case RECEIVED = 'received';
     case VERIFICATION = 'verification';
@@ -13,7 +16,7 @@ enum ComplaintStatus: string
     case DUPLICATE = 'duplicate';
     case INVALID = 'invalid';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::RECEIVED => 'Laporan Diterima',
@@ -27,7 +30,7 @@ enum ComplaintStatus: string
         };
     }
 
-    public function color(): string
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::RECEIVED => 'gray',
@@ -38,5 +41,15 @@ enum ComplaintStatus: string
             self::RESOLVED => 'success',
             self::DUPLICATE, self::INVALID => 'danger',
         };
+    }
+
+    public function label(): string
+    {
+        return $this->getLabel();
+    }
+
+    public function color(): string
+    {
+        return $this->getColor();
     }
 }

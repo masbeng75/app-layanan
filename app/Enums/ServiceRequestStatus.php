@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum ServiceRequestStatus: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
+enum ServiceRequestStatus: string implements HasColor, HasLabel
 {
     case SUBMITTED = 'submitted';
     case DOCUMENT_CHECK = 'document_check';
@@ -22,7 +25,7 @@ enum ServiceRequestStatus: string
     case COMPLETED = 'completed';
     case REJECTED = 'rejected';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::SUBMITTED => 'Diajukan',
@@ -45,7 +48,7 @@ enum ServiceRequestStatus: string
         };
     }
 
-    public function color(): string
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::SUBMITTED => 'gray',
@@ -56,5 +59,15 @@ enum ServiceRequestStatus: string
             self::MINISTRY_APPROVED, self::REACTIVATED, self::ISSUED, self::COMPLETED => 'success',
             self::MINISTRY_REJECTED, self::REJECTED => 'danger',
         };
+    }
+
+    public function label(): string
+    {
+        return $this->getLabel();
+    }
+
+    public function color(): string
+    {
+        return $this->getColor();
     }
 }

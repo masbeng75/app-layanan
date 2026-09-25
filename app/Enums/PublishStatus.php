@@ -2,13 +2,16 @@
 
 namespace App\Enums;
 
-enum PublishStatus: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
+enum PublishStatus: string implements HasColor, HasLabel
 {
     case DRAFT = 'draft';
     case PUBLISHED = 'published';
     case ARCHIVED = 'archived';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::DRAFT => 'Draf',
@@ -17,12 +20,22 @@ enum PublishStatus: string
         };
     }
 
-    public function color(): string
+    public function getColor(): string|array|null
     {
         return match ($this) {
             self::DRAFT => 'gray',
             self::PUBLISHED => 'success',
             self::ARCHIVED => 'warning',
         };
+    }
+
+    public function label(): string
+    {
+        return $this->getLabel();
+    }
+
+    public function color(): string
+    {
+        return $this->getColor();
     }
 }

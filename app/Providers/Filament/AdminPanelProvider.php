@@ -10,8 +10,10 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -29,9 +31,24 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('SAPA SOSIAL')
+            ->brandLogo(fn (): View => view('filament.components.brand-logo'))
+            ->brandLogoHeight('2.1rem')
+            ->font('Plus Jakarta Sans')
             ->colors([
                 'primary' => Color::Emerald,
+                'gray' => Color::Slate,
+                'info' => Color::Cyan,
+                'success' => Color::Emerald,
+                'warning' => Color::Amber,
+                'danger' => Color::Rose,
             ])
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('18rem')
+            ->collapsedSidebarWidth('4.5rem')
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): View => view('filament.theme-styles')
+            )
             ->navigationGroups([
                 'Layanan Utama',
                 'Data Master',
