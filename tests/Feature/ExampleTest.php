@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -15,5 +16,14 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
+    }
+
+    public function test_admin_service_requests_page_is_accessible(): void
+    {
+        $user = User::first();
+        if ($user) {
+            $response = $this->actingAs($user)->get('/admin/service-requests');
+            $response->assertSuccessful();
+        }
     }
 }
