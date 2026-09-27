@@ -15,7 +15,7 @@
 | Factories & Seeders | ✅ Selesai |
 | Admin Panel Provider | ✅ Selesai (SAPA SOSIAL) |
 | **Filament Resources** | ✅ Selesai (Fase 1 & Fase 2) |
-| **Filament Widgets** | ⏳ Fase 3 |
+| **Filament Widgets** | ✅ Selesai (Fase 3) |
 | **Filament Pages** | ⏳ Fase 4 |
 | **Policies** | ⏳ Fase 5 |
 | **Portal Publik** | ❌ Belum ada |
@@ -103,18 +103,18 @@ Resources CRUD untuk data master yang dikelola admin. Semua resource memiliki na
 
 Semua widget di `app/Filament/Widgets/`. Dashboard = Filament default Dashboard page dengan widgets.
 
-| # | Widget | Tipe | Data |
-|---|--------|------|------|
-| 3.1 | `DtsenIssuedOverview` | `StatsOverviewWidget` | Total SK terbit (periode), breakdown per tujuan, per desil |
-| 3.2 | `DtsenAwaitingSignature` | `StatsOverviewWidget` | Jumlah draf menunggu paraf Kabid, menunggu tanda tangan Kadis |
-| 3.3 | `PbiReactivationByStage` | `StatsOverviewWidget` | Jumlah per status: verifikasi, menunggu Kemensos, aktif kembali, ditolak. **Alert** untuk yg tertahan > batas hari |
-| 3.4 | `PbiEmergencyPriority` | `TableWidget` | List pengajuan PBI dengan `reason = emergency` yang belum selesai. Sortir prioritas |
-| 3.5 | `RehabilitationActiveCases` | `StatsOverviewWidget` | Kasus aktif: assessment, in_service, monitoring. Rujukan per lembaga tujuan |
-| 3.6 | `IncomingRequestsChart` | `ChartWidget` | Line/bar chart: pengajuan & pengaduan masuk per hari/minggu di periode terpilih |
-| 3.7 | `RequestsByStatus` | `ChartWidget` (Doughnut) | Distribusi tiket: dalam proses vs selesai, grouped by status |
-| 3.8 | `RegionalDistribution` | `ChartWidget` (Bar) | Jumlah layanan & pengaduan per kecamatan |
-| 3.9 | `TopInformationPages` | `TableWidget` | *(Opsional)* Konten paling sering diakses + kata kunci teratas |
-| 3.10 | Dashboard filter | `HasFiltersForm` trait | Filter: periode (date range), jenis layanan, status, kecamatan, desa. Operator dibatasi wilayahnya |
+| # | Widget | Tipe | Data | Status |
+|---|--------|------|------|--------|
+| 3.1 | `DtsenIssuedOverview` | `StatsOverviewWidget` | Total SK terbit (periode), breakdown per tujuan, per desil | ✅ Selesai |
+| 3.2 | `DtsenAwaitingSignature` | `StatsOverviewWidget` | Jumlah draf menunggu paraf Kabid, menunggu tanda tangan Kadis | ✅ Selesai |
+| 3.3 | `PbiReactivationByStage` | `StatsOverviewWidget` | Jumlah per status: verifikasi, menunggu Kemensos, aktif kembali, ditolak. **Alert** untuk yg tertahan > batas hari | ✅ Selesai |
+| 3.4 | `PbiEmergencyPriority` | `TableWidget` | List pengajuan PBI dengan `reason = emergency` yang belum selesai. Sortir prioritas | ✅ Selesai |
+| 3.5 | `RehabilitationActiveCases` | `StatsOverviewWidget` | Kasus aktif: assessment, in_service, monitoring. Rujukan per lembaga tujuan | ✅ Selesai |
+| 3.6 | `IncomingRequestsChart` | `ChartWidget` | Line/bar chart: pengajuan & pengaduan masuk per hari/minggu di periode terpilih | ✅ Selesai |
+| 3.7 | `RequestsByStatus` | `ChartWidget` (Doughnut) | Distribusi tiket: dalam proses vs selesai, grouped by status | ✅ Selesai |
+| 3.8 | `RegionalDistribution` | `ChartWidget` (Bar) | Jumlah layanan & pengaduan per kecamatan | ✅ Selesai |
+| 3.9 | `TopInformationPages` | `TableWidget` | *(Opsional)* Konten paling sering diakses + kata kunci teratas | ✅ Selesai |
+| 3.10 | Dashboard filter | `HasFiltersForm` trait | Filter: periode (date range), jenis layanan, status, kecamatan, desa. Operator dibatasi wilayahnya | ✅ Selesai |
 
 ---
 
