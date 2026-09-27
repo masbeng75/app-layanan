@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PbiReason;
+use App\Services\NumberSequenceService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,22 @@ use Spatie\Activitylog\Support\LogOptions;
 class PbiReactivation extends Model
 {
     use HasFactory, LogsActivity, SoftDeletes;
+
+    protected static function booted(): void
+    {
+        static::creating(function (PbiReactivation $model): void {
+            if (empty($model->recommendation_number)) {
+                $model->recommendation_number = NumberSequenceService::generatePbiRecommendationNumber();
+            }
+        });
+
+        static::saved(function (PbiReactivation $model): void {
+            $reasonVal = $model->reason instanceof PbiReason ? $model->reason->value : (string) $model->reason;
+            if ($reasonVal === 'emergency' && $model->serviceRequest && ! $model->serviceRequest->is_priority) {
+                $model->serviceRequest->update(['is_priority' => true]);
+            }
+        });
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

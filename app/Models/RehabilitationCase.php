@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\HandlingType;
 use App\Enums\RehabilitationCaseStatus;
+use App\Services\NumberSequenceService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,15 @@ use Spatie\Activitylog\Support\LogOptions;
 class RehabilitationCase extends Model
 {
     use HasFactory, LogsActivity, SoftDeletes;
+
+    protected static function booted(): void
+    {
+        static::creating(function (RehabilitationCase $model): void {
+            if (empty($model->case_number)) {
+                $model->case_number = NumberSequenceService::generateRehabilitationCaseNumber();
+            }
+        });
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

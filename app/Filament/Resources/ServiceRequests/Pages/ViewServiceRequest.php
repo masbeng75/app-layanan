@@ -8,6 +8,8 @@ use App\Filament\Resources\ServiceRequests\ServiceRequestResource;
 use App\Models\Approval;
 use App\Models\ServiceRequest;
 use App\Models\StatusHistory;
+use App\Services\CertificatePdfService;
+use App\Services\NumberSequenceService;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
@@ -16,6 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ViewServiceRequest extends ViewRecord
 {
@@ -174,8 +177,11 @@ class ViewServiceRequest extends ViewRecord
                 ]))
                 ->schema([
                     TextInput::make('certificate_number')
-                        ->label('Nomor Surat Keterangan / Dokumen')
-                        ->default(fn () => '460/'.rand(100, 999).'/409.105/'.date('Y'))
+                        ->label('Nomor Surat Keterangan / Rekomendasi')
+                        ->default(fn () => $this->record->dtsenCertificate
+                            ? NumberSequenceService::generateDtsenCertificateNumber()
+                            : NumberSequenceService::generatePbiRecommendationNumber()
+                        )
                         ->required(),
                     Textarea::make('notes')
                         ->label('Catatan Penerbitan'),
@@ -196,12 +202,50 @@ class ViewServiceRequest extends ViewRecord
                             'issued_at' => now(),
                             'valid_until' => now()->addDays(30),
                             'signer_id' => Auth::id(),
-                            'verification_code' => strtoupper(bin2hex(random_bytes(6))),
                         ]);
+                        CertificatePdfService::generateDtsenPdf($this->record->dtsenCertificate);
+                        $this->transitionStatus(ServiceRequestStatus::ISSUED, 'Surat Keterangan resmi diterbitkan dengan nomor: '.$data['certificate_number']);
+                        Notification::make()->title('SK DTSEN Berhasil Diterbitkan & Dokumen PDF Dibuat!')->success()->send();
+                    } elseif ($this->record->pbiReactivation) {
+                        $this->record->pbiReactivation->update([
+                            'recommendation_number' => $data['certificate_number'],
+                            'recommendation_issued_at' => now(),
+                            'signer_id' => Auth::id(),
+                        ]);
+                        CertificatePdfService::generatePbiPdf($this->record->pbiReactivation);
+                        $this->transitionStatus(ServiceRequestStatus::RECOMMENDATION_ISSUED, 'Surat Rekomendasi PBI resmi diterbitkan dengan nomor: '.$data['certificate_number']);
+                        Notification::make()->title('Surat Rekomendasi PBI Berhasil Diterbitkan & Dokumen PDF Dibuat!')->success()->send();
+                    }
+                }),
+
+            Action::make('downloadDtsenPdf')
+                ->label('Unduh SK DTSEN (PDF)')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('success')
+                ->visible(fn (): bool => $this->record->dtsenCertificate !== null && ($this->record->status === ServiceRequestStatus::ISSUED || $this->record->dtsenCertificate->issued_at !== null))
+                ->action(function () {
+                    $cert = $this->record->dtsenCertificate;
+                    if (! $cert->file_path || ! Storage::disk('local')->exists($cert->file_path)) {
+                        CertificatePdfService::generateDtsenPdf($cert);
+                        $cert->refresh();
                     }
 
-                    $this->transitionStatus(ServiceRequestStatus::ISSUED, 'Surat Keterangan resmi diterbitkan dengan nomor: '.$data['certificate_number']);
-                    Notification::make()->title('Surat Keterangan Berhasil Diterbitkan!')->success()->send();
+                    return Storage::disk('local')->download($cert->file_path, 'SK_DTSEN_'.$cert->certificate_number.'.pdf');
+                }),
+
+            Action::make('downloadPbiPdf')
+                ->label('Unduh Rekomendasi PBI (PDF)')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('primary')
+                ->visible(fn (): bool => $this->record->pbiReactivation !== null && ($this->record->status === ServiceRequestStatus::RECOMMENDATION_ISSUED || $this->record->pbiReactivation->recommendation_issued_at !== null))
+                ->action(function () {
+                    $pbi = $this->record->pbiReactivation;
+                    $filePath = 'certificates/rekomendasi-pbi-'.$pbi->id.'.pdf';
+                    if (! Storage::disk('local')->exists($filePath)) {
+                        CertificatePdfService::generatePbiPdf($pbi);
+                    }
+
+                    return Storage::disk('local')->download($filePath, 'Rekomendasi_PBI_'.$pbi->recommendation_number.'.pdf');
                 }),
 
             // 7. Tolak Permohonan

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ComplaintStatus;
 use App\Models\Scopes\TerritoryScope;
+use App\Services\NumberSequenceService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,12 @@ class Complaint extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new TerritoryScope);
+
+        static::creating(function (Complaint $model): void {
+            if (empty($model->complaint_number)) {
+                $model->complaint_number = NumberSequenceService::generateComplaintNumber();
+            }
+        });
     }
 
     public function getActivitylogOptions(): LogOptions

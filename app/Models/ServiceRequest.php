@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ServiceRequestStatus;
 use App\Models\Scopes\TerritoryScope;
+use App\Services\NumberSequenceService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,12 @@ class ServiceRequest extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new TerritoryScope);
+
+        static::creating(function (ServiceRequest $model): void {
+            if (empty($model->request_number)) {
+                $model->request_number = NumberSequenceService::generateServiceRequestNumber();
+            }
+        });
     }
 
     public function getActivitylogOptions(): LogOptions

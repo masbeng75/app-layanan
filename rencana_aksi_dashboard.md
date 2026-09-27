@@ -147,15 +147,15 @@ Semua widget di `app/Filament/Widgets/`. Dashboard = Filament default Dashboard 
 
 ### Fase 6 — Fitur Bisnis Khusus *(3 hari)*
 
-| # | Task | Detail |
-|---|------|--------|
-| 6.1 | Nomor tiket otomatis | Service class `NumberSequenceService` → `lockForUpdate()` di transaksi, format: `{PREFIX}-YYYYMM-NNNNN` |
-| 6.2 | Generate PDF SK DTSEN | Blade template → DomPDF. QR code → `simplesoftwareio/simple-qrcode`. Auto-generate saat status `issued` |
-| 6.3 | Generate PDF Surat Rekomendasi PBI | Template + QR, generate saat `recommendation_issued` |
-| 6.4 | Verifikasi keaslian surat (Portal) | Route publik `GET /verifikasi/{verification_code}` → cek validitas + masa berlaku |
-| 6.5 | Deteksi duplikasi SK DTSEN | Peringatan di form jika pemohon + tujuan sama + surat masih berlaku |
-| 6.6 | Alert tiket tertahan | Console command scheduled: cek PBI `proposed_to_ministry` > N hari → tandai di dashboard + Filament notification |
-| 6.7 | Prioritas darurat medis PBI | Auto `is_priority = true` saat `reason = emergency`. Default sort di table |
+| # | Task | Detail | Status |
+|---|------|--------|--------|
+| 6.1 | Nomor tiket otomatis | Service class `NumberSequenceService` → `lockForUpdate()` di transaksi, format: `{PREFIX}-YYYYMM-NNNNN` | ✅ Selesai |
+| 6.2 | Generate PDF SK DTSEN | Blade template → DomPDF. QR code → `simplesoftwareio/simple-qrcode`. Auto-generate saat status `issued` | ✅ Selesai |
+| 6.3 | Generate PDF Surat Rekomendasi PBI | Template + QR, generate saat `recommendation_issued` | ✅ Selesai |
+| 6.4 | Verifikasi keaslian surat (Portal) | Route publik `GET /verifikasi/{verification_code}` → cek validitas + masa berlaku | ✅ Selesai |
+| 6.5 | Deteksi duplikasi SK DTSEN | Peringatan di form jika pemohon + tujuan sama + surat masih berlaku | ✅ Selesai |
+| 6.6 | Alert tiket tertahan | Console command scheduled: cek PBI `proposed_to_ministry` > N hari → tandai di dashboard + Filament notification | ✅ Selesai |
+| 6.7 | Prioritas darurat medis PBI | Auto `is_priority = true` saat `reason = emergency`. Default sort di table | ✅ Selesai |
 
 ---
 

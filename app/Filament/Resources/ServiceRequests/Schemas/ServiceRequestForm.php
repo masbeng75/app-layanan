@@ -6,9 +6,11 @@ use App\Enums\ServiceRequestStatus;
 use App\Models\District;
 use App\Models\User;
 use App\Models\Village;
+use App\Services\DtsenDuplicateCheckService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -30,7 +32,32 @@ class ServiceRequestForm
                             TextInput::make('applicant_nik')
                                 ->label('NIK Pemohon (16 Digit)')
                                 ->required()
-                                ->length(16),
+                                ->length(16)
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(function (?string $state): void {
+                                    if ($state && strlen($state) === 16) {
+                                        $duplicate = DtsenDuplicateCheckService::checkDuplicate($state);
+                                        if ($duplicate) {
+                                            Notification::make()
+                                                ->warning()
+                                                ->title('Perhatian: Surat Keterangan DTSEN Masih Aktif')
+                                                ->body("NIK {$state} sudah terdaftar pada SK DTSEN {$duplicate->certificate_number} untuk keperluan {$duplicate->purpose?->name} (berlaku s.d. ".($duplicate->valid_until ? $duplicate->valid_until->format('d/m/Y') : 'permanen').'). Harap verifikasi sebelum memproses pengajuan baru.')
+                                                ->persistent()
+                                                ->send();
+                                        }
+                                    }
+                                })
+                                ->helperText(function (Get $get): ?string {
+                                    $nik = $get('applicant_nik');
+                                    if ($nik && strlen((string) $nik) === 16) {
+                                        $duplicate = DtsenDuplicateCheckService::checkDuplicate((string) $nik);
+                                        if ($duplicate) {
+                                            return '⚠️ NIK ini memiliki SK DTSEN aktif: '.$duplicate->certificate_number;
+                                        }
+                                    }
+
+                                    return null;
+                                }),
                             TextInput::make('applicant_kk')
                                 ->label('Nomor Kartu Keluarga (KK)')
                                 ->length(16),

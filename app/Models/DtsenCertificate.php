@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\NumberSequenceService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,18 @@ use Spatie\Activitylog\Support\LogOptions;
 class DtsenCertificate extends Model
 {
     use HasFactory, LogsActivity, SoftDeletes;
+
+    protected static function booted(): void
+    {
+        static::creating(function (DtsenCertificate $model): void {
+            if (empty($model->verification_code)) {
+                $model->verification_code = strtoupper(bin2hex(random_bytes(6)));
+            }
+            if (empty($model->certificate_number)) {
+                $model->certificate_number = NumberSequenceService::generateDtsenCertificateNumber();
+            }
+        });
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

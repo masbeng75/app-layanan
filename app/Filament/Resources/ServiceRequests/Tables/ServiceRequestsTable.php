@@ -23,6 +23,7 @@ class ServiceRequestsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->orderByDesc('is_priority')->orderByDesc('created_at'))
             ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('request_number')
