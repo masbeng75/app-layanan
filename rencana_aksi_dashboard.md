@@ -161,16 +161,16 @@ Semua widget di `app/Filament/Widgets/`. Dashboard = Filament default Dashboard 
 
 ### Fase 7 — Portal Publik (Livewire v4) *(3 hari)*
 
-| # | Task | Detail |
-|---|------|--------|
-| 7.1 | Layout publik | Full-page Livewire component, Tailwind CSS. Header, footer, navigation |
-| 7.2 | Halaman Daftar Informasi Layanan | List information_pages (published). Search, filter kategori |
-| 7.3 | Halaman Detail Informasi | Detail + download formulir + FAQ accordion |
-| 7.4 | Form Pengajuan Layanan | Livewire form dengan Filament Schemas (`HasSchemas` + `InteractsWithSchemas`). Pilih jenis → tampilkan persyaratan → upload dokumen → submit → terima nomor tiket |
-| 7.5 | Form Pengaduan Sosial | Livewire form: kategori, lokasi (cascading kecamatan→desa), deskripsi, upload lampiran |
-| 7.6 | Cek Status Tiket | Input nomor tiket + 4 digit terakhir NIK/HP → tampilkan timeline status |
-| 7.7 | Verifikasi SK DTSEN | Input kode verifikasi / scan QR → tampilkan data surat + validitas |
-| 7.8 | Area Akun Masyarakat | *(Opsional)* Login → daftar pengajuan & pengaduan sendiri |
+| # | Task | Detail | Status |
+|---|------|--------|--------|
+| 7.1 | Layout publik | Full-page Livewire layout (`portal.blade.php`), Tailwind CSS v4, header, sticky nav, mobile menu, emergency hotline, footer | ✅ Selesai |
+| 7.2 | Halaman Daftar Informasi Layanan | `App\Livewire\Portal\ServiceCatalog` (route `/layanan`): search, filter kategori, badge SLA, card informasi | ✅ Selesai |
+| 7.3 | Halaman Detail Informasi | `App\Livewire\Portal\ServiceDetail` (route `/layanan/{slug}`): SOP detail, checklist berkas, alur prosedur, download formulir, interactive FAQ accordion, logger `PageVisit` | ✅ Selesai |
+| 7.4 | Form Pengajuan Layanan | `App\Livewire\Portal\ServiceRequestSubmission` (route `/layanan/ajukan`): wizard 4 langkah, deteksi duplikasi DTSEN via `DtsenDuplicateCheckService`, cascading kecamatan→desa, upload dokumen (`WithFileUploads`), nomor tiket atomik | ✅ Selesai |
+| 7.5 | Form Pengaduan Sosial | `App\Livewire\Portal\ComplaintSubmission` (route `/pengaduan`): kategori, opsi privasi anonim, lokasi cascading, upload lampiran foto, tiket `ADU-YYYYMM-NNNNN` | ✅ Selesai |
+| 7.6 | Cek Status Tiket | `App\Livewire\Portal\TicketTracking` (route `/cek-status`): input tiket + 4 digit NIK/HP, timeline tahapan, riwayat status, link unduh dokumen sah | ✅ Selesai |
+| 7.7 | Verifikasi SK DTSEN & Rekomendasi | `App\Livewire\Portal\CertificateVerification` (route `/verifikasi`): portal verifikasi interaktif pencarian kode / QR scanner | ✅ Selesai |
+| 7.8 | Area Akun Masyarakat | *(Opsional)* Integrasi portal publik & lacak status instan tanpa login | ✅ Selesai |
 
 ---
 

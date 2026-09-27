@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
             // 1. Administrator Sistem
             [
                 'email' => 'admin@dinsos.blitarkab.go.id',
-                'name' => 'Ahmad Mu\'amar Muzakki, S.Kom.',
+                'name' => 'Ahmad Muamar Muzakki, S.Kom.',
                 'phone' => '081234567001',
                 'nik' => '3505081001890001',
                 'work_unit_id' => $sekretariat?->id,
