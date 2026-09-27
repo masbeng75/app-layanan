@@ -134,14 +134,14 @@ Semua widget di `app/Filament/Widgets/`. Dashboard = Filament default Dashboard 
 
 ### Fase 5 — Keamanan, Hak Akses & Audit *(2 hari)*
 
-| # | Task | Detail |
-|---|------|--------|
-| 5.1 | Policies per Resource | Buat Policy untuk setiap model. Atur: Admin → full, Petugas → CRUD sesuai unit, Pejabat → view + approve, Pimpinan → viewAny (read-only), Operator → scope wilayah |
-| 5.2 | Global scope wilayah Operator | `Scope` otomatis filter `village_id` / `district_id` untuk Operator Kecamatan/Desa |
-| 5.3 | Navigation visibility | Sembunyikan menu berdasarkan role: Pimpinan hanya lihat Dashboard + Laporan, Operator tidak lihat Data Master |
-| 5.4 | Sensitive data protection | Data klien rehabilitasi: Policy hanya officer yg ditugaskan + admin + pimpinan (ringkasan). Dokumen via signed URL |
-| 5.5 | Activity log integration | Tambah trait `LogsActivity` pada model transaksi (ServiceRequest, Complaint, RehabilitationCase, dll.) |
-| 5.6 | Filament Shield / permission sync | *(Opsional)* `filament/shield` untuk auto-generate permissions per resource |
+| # | Task | Detail | Status |
+|---|------|--------|--------|
+| 5.1 | Policies per Resource | Buat Policy untuk setiap model. Atur: Admin → full, Petugas → CRUD sesuai unit, Pejabat → view + approve, Pimpinan → viewAny (read-only), Operator → scope wilayah | ✅ Selesai |
+| 5.2 | Global scope wilayah Operator | `Scope` otomatis filter `village_id` / `district_id` untuk Operator Kecamatan/Desa | ✅ Selesai |
+| 5.3 | Navigation visibility | Sembunyikan menu berdasarkan role: Pimpinan hanya lihat Dashboard + Laporan, Operator tidak lihat Data Master | ✅ Selesai |
+| 5.4 | Sensitive data protection | Data klien rehabilitasi: Policy hanya officer yg ditugaskan + admin + pimpinan (ringkasan). Dokumen via signed URL | ✅ Selesai |
+| 5.5 | Activity log integration | Tambah trait `LogsActivity` pada model transaksi (ServiceRequest, Complaint, RehabilitationCase, dll.) | ✅ Selesai |
+| 5.6 | Filament Shield / permission sync | Granular permissions per resource & sync ke Spatie Role & Permissions seeder | ✅ Selesai |
 
 ---
 

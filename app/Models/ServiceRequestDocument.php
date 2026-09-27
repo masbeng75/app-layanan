@@ -6,6 +6,7 @@ use App\Enums\DocumentVerificationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\URL;
 
 class ServiceRequestDocument extends Model
 {
@@ -35,5 +36,14 @@ class ServiceRequestDocument extends Model
     public function requirement(): BelongsTo
     {
         return $this->belongsTo(ServiceRequirement::class, 'service_requirement_id');
+    }
+
+    public function getSignedUrl(int $expirationMinutes = 30): string
+    {
+        return URL::temporarySignedRoute(
+            'documents.service-request.download',
+            now()->addMinutes($expirationMinutes),
+            ['document' => $this->id]
+        );
     }
 }

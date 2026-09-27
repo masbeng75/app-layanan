@@ -35,6 +35,16 @@ class ComplaintResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        if ($user?->isPurePimpinan()) {
+            return false;
+        }
+
+        return parent::shouldRegisterNavigation();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ComplaintForm::configure($schema);

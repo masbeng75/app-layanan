@@ -40,6 +40,15 @@ class ComplaintsReportPage extends Page implements HasTable
 
     protected static ?int $navigationSort = 5;
 
+    public static function canAccess(): bool
+    {
+        $user = auth()->user();
+
+        return $user !== null
+            && ! $user->isOperator()
+            && ! $user->hasRole('warga');
+    }
+
     public function content(Schema $schema): Schema
     {
         return $schema

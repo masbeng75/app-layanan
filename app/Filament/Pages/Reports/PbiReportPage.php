@@ -41,6 +41,15 @@ class PbiReportPage extends Page implements HasTable
 
     protected static ?int $navigationSort = 2;
 
+    public static function canAccess(): bool
+    {
+        $user = auth()->user();
+
+        return $user !== null
+            && ! $user->isOperator()
+            && ! $user->hasRole('warga');
+    }
+
     public function content(Schema $schema): Schema
     {
         return $schema

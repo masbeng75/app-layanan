@@ -32,6 +32,16 @@ class InformationPageResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        if ($user?->isPurePimpinan()) {
+            return false;
+        }
+
+        return parent::shouldRegisterNavigation();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return InformationPageForm::configure($schema);

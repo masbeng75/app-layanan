@@ -45,17 +45,33 @@ class ServiceRequestForm
                                 ->maxLength(255),
                             Select::make('district_id')
                                 ->label('Kecamatan')
-                                ->options(District::pluck('name', 'id'))
+                                ->options(fn () => auth()->user()?->isOperator() && auth()->user()?->district_id
+                                    ? District::where('id', auth()->user()->district_id)->pluck('name', 'id')
+                                    : District::pluck('name', 'id')
+                                )
+                                ->default(fn () => auth()->user()?->district_id)
+                                ->disabled(fn () => auth()->user()?->isOperator() && auth()->user()?->district_id !== null)
+                                ->dehydrated()
                                 ->searchable()
                                 ->preload()
                                 ->live()
                                 ->afterStateUpdated(fn ($set) => $set('village_id', null)),
                             Select::make('village_id')
                                 ->label('Desa / Kelurahan')
-                                ->options(fn (Get $get) => $get('district_id')
-                                    ? Village::where('district_id', $get('district_id'))->pluck('name', 'id')
-                                    : Village::pluck('name', 'id')
-                                )
+                                ->options(function (Get $get) {
+                                    $user = auth()->user();
+                                    if ($user?->isOperator() && $user?->village_id) {
+                                        return Village::where('id', $user->village_id)->pluck('name', 'id');
+                                    }
+                                    $districtId = $get('district_id') ?? $user?->district_id;
+
+                                    return $districtId
+                                        ? Village::where('district_id', $districtId)->pluck('name', 'id')
+                                        : Village::pluck('name', 'id');
+                                })
+                                ->default(fn () => auth()->user()?->village_id)
+                                ->disabled(fn () => auth()->user()?->isOperator() && auth()->user()?->village_id !== null)
+                                ->dehydrated()
                                 ->searchable()
                                 ->preload()
                                 ->required(),

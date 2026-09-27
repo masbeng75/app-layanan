@@ -35,6 +35,16 @@ class ServiceRequestResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        if ($user?->isPurePimpinan()) {
+            return false;
+        }
+
+        return parent::shouldRegisterNavigation();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ServiceRequestForm::configure($schema);
