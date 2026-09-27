@@ -3,11 +3,14 @@
 namespace App\Filament\Resources\ServiceRequests\Tables;
 
 use App\Enums\ServiceRequestStatus;
+use App\Filament\Exports\ServiceRequestExporter;
 use App\Models\User;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
@@ -72,12 +75,21 @@ class ServiceRequestsTable
                     ->relationship('village', 'name')
                     ->searchable(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Ekspor Data')
+                    ->exporter(ServiceRequestExporter::class)
+                    ->color('success'),
+            ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->label('Ekspor Pilihan')
+                        ->exporter(ServiceRequestExporter::class),
                     BulkAction::make('assignOfficer')
                         ->label('Tugaskan Petugas')
                         ->icon('heroicon-o-user-plus')

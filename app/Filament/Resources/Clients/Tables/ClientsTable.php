@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Clients\Tables;
 
+use App\Filament\Exports\ClientExporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -53,11 +56,20 @@ class ClientsTable
                     ->relationship('village', 'name')
                     ->searchable(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Ekspor Data')
+                    ->exporter(ClientExporter::class)
+                    ->color('success'),
+            ])
             ->recordActions([
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->label('Ekspor Pilihan')
+                        ->exporter(ClientExporter::class),
                     DeleteBulkAction::make(),
                 ]),
             ]);

@@ -16,7 +16,7 @@
 | Admin Panel Provider | ✅ Selesai (SAPA SOSIAL) |
 | **Filament Resources** | ✅ Selesai (Fase 1 & Fase 2) |
 | **Filament Widgets** | ✅ Selesai (Fase 3) |
-| **Filament Pages** | ⏳ Fase 4 |
+| **Filament Pages (Laporan)** | ✅ Selesai (Fase 4) |
 | **Policies** | ⏳ Fase 5 |
 | **Portal Publik** | ❌ Belum ada |
 
@@ -120,15 +120,15 @@ Semua widget di `app/Filament/Widgets/`. Dashboard = Filament default Dashboard 
 
 ### Fase 4 — Laporan & Ekspor *(2 hari)*
 
-| # | Task | Detail |
-|---|------|--------|
-| 4.1 | Install paket ekspor | `filament/actions` export atau `maatwebsite/excel`, `barryvdh/laravel-dompdf` / `spatie/laravel-pdf` |
-| 4.2 | Halaman Laporan Rekap SK DTSEN | Custom Filament Page dengan filter periode, tujuan, kecamatan → tabel ringkasan → export Excel & PDF |
-| 4.3 | Halaman Laporan Reaktivasi PBI-JK | Filter periode, alasan, status, kecamatan → rekap + rata-rata lama proses → export |
-| 4.4 | Halaman Laporan Rehabilitasi Sosial | Filter periode, kategori klien, lembaga tujuan → rekap kasus & rujukan → export |
-| 4.5 | Halaman Laporan Pelayanan (Semua Jenis) | Filter jenis layanan, periode, wilayah → jumlah per status → export |
-| 4.6 | Halaman Laporan Pengaduan | Filter kategori, periode, kecamatan → rekap per status → export |
-| 4.7 | Export Actions di tiap Resource | Tambahkan `ExportAction` di header table untuk export data yang sedang ditampilkan |
+| # | Task | Detail | Status |
+|---|------|--------|--------|
+| 4.1 | Install paket ekspor | `openspout/openspout` (Excel/CSV), `barryvdh/laravel-dompdf` (PDF) | ✅ Selesai |
+| 4.2 | Halaman Laporan Rekap SK DTSEN | Custom Filament Page `DtsenReportPage` dengan filter periode, tujuan, kecamatan → tabel ringkasan → export Excel & PDF | ✅ Selesai |
+| 4.3 | Halaman Laporan Reaktivasi PBI-JK | Custom Filament Page `PbiReportPage`: filter periode, alasan, status, kecamatan → rekap + rata-rata lama proses → export Excel & PDF | ✅ Selesai |
+| 4.4 | Halaman Laporan Rehabilitasi Sosial | Custom Filament Page `RehabilitationReportPage`: filter periode, kategori klien, lembaga tujuan → rekap kasus & rujukan → export Excel & PDF | ✅ Selesai |
+| 4.5 | Halaman Laporan Pelayanan (Semua Jenis) | Custom Filament Page `ServiceRequestsReportPage`: filter jenis layanan, periode, wilayah → jumlah per status → export Excel & PDF | ✅ Selesai |
+| 4.6 | Halaman Laporan Pengaduan | Custom Filament Page `ComplaintsReportPage`: filter kategori, periode, kecamatan → rekap per status → export Excel & PDF | ✅ Selesai |
+| 4.7 | Export Actions di tiap Resource | `ExportAction` di header table dan `ExportBulkAction` untuk ServiceRequest, Complaint, RehabCase, Client | ✅ Selesai |
 
 ---
 

@@ -113,4 +113,56 @@ class User extends Authenticatable implements FilamentUser
     {
         return (bool) $this->is_active;
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('administrator');
+    }
+
+    public function isPimpinan(): bool
+    {
+        return $this->hasRole('pimpinan');
+    }
+
+    public function isPurePimpinan(): bool
+    {
+        return $this->hasRole('pimpinan') && ! $this->hasAnyRole(['administrator', 'petugas_dinsos', 'pejabat_penandatangan']);
+    }
+
+    public function isPejabatPenandatangan(): bool
+    {
+        return $this->hasRole('pejabat_penandatangan');
+    }
+
+    public function isPetugasDinsos(): bool
+    {
+        return $this->hasRole('petugas_dinsos');
+    }
+
+    public function isOperator(): bool
+    {
+        return $this->hasRole('operator_kecamatan_desa');
+    }
+
+    public function canAccessWilayah(?int $districtId, ?int $villageId): bool
+    {
+        if (! $this->isOperator()) {
+            return true;
+        }
+
+        if ($this->village_id) {
+            return $villageId === $this->village_id;
+        }
+
+        if ($this->district_id) {
+            if ($districtId && $districtId === $this->district_id) {
+                return true;
+            }
+            if ($villageId) {
+                return Village::where('id', $villageId)->where('district_id', $this->district_id)->exists();
+            }
+        }
+
+        return false;
+    }
 }

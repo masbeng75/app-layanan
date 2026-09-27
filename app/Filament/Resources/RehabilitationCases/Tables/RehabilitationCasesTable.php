@@ -4,9 +4,12 @@ namespace App\Filament\Resources\RehabilitationCases\Tables;
 
 use App\Enums\HandlingType;
 use App\Enums\RehabilitationCaseStatus;
+use App\Filament\Exports\RehabilitationCaseExporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -68,12 +71,21 @@ class RehabilitationCasesTable
                     ->label('Petugas Peksos')
                     ->relationship('officer', 'name'),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Ekspor Data')
+                    ->exporter(RehabilitationCaseExporter::class)
+                    ->color('success'),
+            ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->label('Ekspor Pilihan')
+                        ->exporter(RehabilitationCaseExporter::class),
                     DeleteBulkAction::make(),
                 ]),
             ]);

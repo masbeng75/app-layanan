@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\Complaints\Tables;
 
 use App\Enums\ComplaintStatus;
+use App\Filament\Exports\ComplaintExporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -73,12 +76,21 @@ class ComplaintsTable
                     ->relationship('village', 'name')
                     ->searchable(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Ekspor Data')
+                    ->exporter(ComplaintExporter::class)
+                    ->color('success'),
+            ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->label('Ekspor Pilihan')
+                        ->exporter(ComplaintExporter::class),
                     DeleteBulkAction::make(),
                 ]),
             ]);

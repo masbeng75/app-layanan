@@ -50,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
             )
             ->navigationGroups([
                 'Layanan Utama',
+                'Laporan & Statistik',
                 'Data Master',
                 'Pengaturan',
             ])
