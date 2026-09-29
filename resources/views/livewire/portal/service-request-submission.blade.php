@@ -334,8 +334,9 @@
                                     <label class="block text-xs font-bold text-slate-700 mb-1">
                                         Desa / Kelurahan <span class="text-rose-500">*</span>
                                     </label>
-                                    <select wire:model="village_id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 text-slate-800 bg-white" {{ !$district_id ? 'disabled' : '' }}>
-                                        <option value="">-- Pilih Desa/Kelurahan --</option>
+                                    <select wire:model="village_id" wire:loading.attr="disabled" wire:target="district_id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 text-slate-800 bg-white" {{ !$district_id ? 'disabled' : '' }}>
+                                        <option value="" wire:loading.remove wire:target="district_id">-- Pilih Desa/Kelurahan --</option>
+                                        <option value="" wire:loading wire:target="district_id">Memuat data desa...</option>
                                         @foreach($villages as $v)
                                             <option value="{{ $v->id }}">{{ $v->name }}</option>
                                         @endforeach
@@ -437,7 +438,7 @@
                                 </div>
                                 <div class="flex justify-between border-b border-slate-200 pb-2">
                                     <span class="text-slate-500">Domisili</span>
-                                    <span class="font-bold text-slate-900">Desa/Kel. ID: {{ $village_id }}, Kec. ID: {{ $district_id }}</span>
+                                    <span class="font-bold text-slate-900">{{ $villages->firstWhere('id', $village_id)?->name ?? 'Desa/Kel. ID: '.$village_id }}, Kec. {{ $districts->firstWhere('id', $district_id)?->name ?? 'Kec. ID: '.$district_id }}</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-slate-500">Total Berkas Diunggah</span>

@@ -145,8 +145,9 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">
                                     Desa / Kelurahan <span class="text-rose-500">*</span>
                                 </label>
-                                <select wire:model="village_id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-rose-500 text-slate-800 bg-white" {{ !$district_id ? 'disabled' : '' }}>
-                                    <option value="">-- Pilih Desa/Kelurahan --</option>
+                                <select wire:model="village_id" wire:loading.attr="disabled" wire:target="district_id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-rose-500 text-slate-800 bg-white" {{ !$district_id ? 'disabled' : '' }}>
+                                    <option value="" wire:loading.remove wire:target="district_id">-- Pilih Desa/Kelurahan --</option>
+                                    <option value="" wire:loading wire:target="district_id">Memuat data desa...</option>
                                     @foreach($villages as $v)
                                         <option value="{{ $v->id }}">{{ $v->name }}</option>
                                     @endforeach
